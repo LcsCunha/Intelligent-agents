@@ -6,7 +6,7 @@ class classeAmbiente:
   Classe responsável por instanciar o ambiente em que atuará os agentes robô coletor e robô seletor
   """
   ambiente = None
-  R1 = roboColetorReativoSimples("R1")
+  R1 = roboColetorReativoSimples("R")
 
   def geraAmbiente(self):
     """
@@ -17,6 +17,9 @@ class classeAmbiente:
     0 - Posição livre
     1 - Lixo reciclável
     2 - Lixo orgânico
+
+    O robô R1 inicia na posição 1x1, o robô R2 inicia na posição 1x20. As lixeiras estão em 12x1 e 12x20, o incinerador está em 20x1 e a recicladora em
+    20x20.
     """
     
     ambiente = []
@@ -29,7 +32,7 @@ class classeAmbiente:
       ambiente.append(linha)
 
     ambiente[0][0] = "R1"
-    ambiente[0][19] = "R2"
+    ambiente[0][19] = "Q"
     ambiente[11][0] = "X"
     ambiente[11][19] = "Y"
     ambiente[19][0] = "I"
@@ -52,11 +55,6 @@ class classeAmbiente:
       qtdLixos = 0
 
     ambiente[0][0] = " "
-    """
-    O robô R1 inicia na posição 1x1, o robô R2 inicia na posição 1x20. As lixeiras estão em 12x1 e 12x20, o incinerador está em 20x1 e a recicladora em
-    20x20.
-    """
-    
     self.ambiente = ambiente
 
   def __init__(self):
@@ -69,6 +67,8 @@ class classeAmbiente:
     #yR1 = self.R1.localAtual['y']
     #self.ambiente[xR1][yR1] = "R1"
     self.ambiente = self.R1.checalixo(self.ambiente)
+
+    #self.ambiente = self.R2.levaLixo(self.ambiente)
   
   def getAmbiente (self):
     """
