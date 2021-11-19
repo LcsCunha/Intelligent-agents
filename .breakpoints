@@ -1,3 +1,12 @@
 {
-  "files": {}
+  "files": {
+    "roboColetor.py": [
+      {
+        "id": "8766ae09-7206-4064-93c1-80d66ee41b16",
+        "line": 17,
+        "version": 3092,
+        "index": 365
+      }
+    ]
+  }
 }
