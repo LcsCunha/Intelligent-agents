@@ -5,10 +5,6 @@ class robo:
   """
   nome = ""
   #Percepções
-  localAtual = {
-    'x': 0,
-    'y': 0
-  }
 
   localLixeira = {
     'X': (11, 0,),
@@ -20,8 +16,6 @@ class robo:
   lixo_carregado = None
 
   def __init__ (self, nome):
-    self.localAtual['x'] = 0
-    self.localAtual['y'] = 0
     self.nome = nome
 
   def checalixo(self, espaco):
