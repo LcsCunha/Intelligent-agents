@@ -6,77 +6,71 @@ from roboSeletorUtilidade import roboSeletorUtilidade
 from roboColetorReativoSimples import roboColetorReativoSimples
 from roboSeletorReativoSimples import roboSeletorReativoSimples
 
-class classeAmbiente:
+class Ambiente:
   """
-  Classe responsável por instanciar o ambiente em que atuará os agentes robô coletor e robô seletor
+  Classe responsável por instanciar, atualizar e printar 
+  o ambiente em que atuará os agentes.
   """
-  ambiente = None
-  R1 = roboColetorObjetivo("R1")
-  R2 = roboSeletorObjetivo("R2")
-  #R1 = roboColetorUtilidade("R1")
-  #R2 = roboSeletorUtilidade("R2")
-  #R1 = roboColetorReativoSimples("R1")
-  #R2 = roboSeletorReativoSimples("R2")
-  
-  X = []
-  Y = []
-  I = []
-  R = []
 
-  def geraAmbiente(self):
-    """
-    Método responsável por gerar o ambiente inserindo os robôs  e lixeiras em suas respectivas posições e
-    lixo de forma randômica.
-    Todas as posições serão aleatoriamente contempladas com um lixo orgânico ou reciclável ou nenhum deles, e
-    após isso as posições padrões do robô e dos lixos será setada.
-    0 - Posição livre
-    1 - Lixo reciclável
-    2 - Lixo orgânico
-    """
+  def __init__(self, robo):
+
     
-    ambiente = []
-    qtdLixos = 0
+    self.robo = robo
+    self.ambiente = self.geraAmbiente()
 
-    for i in range(20):
-      linha = []
-      for j in range(20):
-        linha.append(0)
-      ambiente.append(linha)
-
-    ambiente[0][0] = "R1"
-    ambiente[0][19] = "R2"
-    ambiente[11][0] = "X"
-    ambiente[11][19] = "Y"
-    ambiente[19][0] = "I"
-    ambiente[19][19] = "R"
-
-    for i in range(20):
-      for j in range(20):
-        if ambiente[i][j] != 0:
-          continue
-        seed = random.randrange(0, 10)
-        if seed > 3:
-          ambiente[i][j] = " "
-          continue
-        lixo = random.randrange(0, 3)
-        if (lixo > 0 and qtdLixos < 2):
-          qtdLixos += 1
-          ambiente[i][j] = lixo
-        else:
-          ambiente[i][j] = " "
-      qtdLixos = 0
-
-    ambiente[0][0] = " "
-    ambiente[0][19] = " "
     """
-    O robô R1 inicia na posição 1x1, o robô R2 inicia na posição 1x20. As lixeiras estão em 12x1 e 12x20, o incinerador está em 20x1 e a recicladora em
+    O robô R1 inicia na posição 1x1. As lixeiras estão em 12x1 e 12x20, o incinerador está em 20x1 e a recicladora em
     20x20.
     """
     
-    self.ambiente = ambiente
+    self.locais_lixeira = {
+      'lixo_1': (11, 0,),
+      'lixo_2': (11, 19,),
+      'incineradora': (19, 0),
+      'recicladora': (19, 19),
+      }    
 
-  def __init__(self):
-    self.geraAmbiente()
+
+  def geraAmbiente(self):
+    """
+    Método responsável por gerar o ambiente inserindo os lixos de forma randômica.
+    Todas as posições serão aleatoriamente contempladas com um lixo orgânico 
+    ou reciclável ou nenhum deles. 
+    E após isso as posições padrões do robô e dos lixos será setada.
+    " " - Posição livre
+    1 - Lixo reciclável
+    2 - Lixo orgânico
+    """    
+
+
+    self.qtdLixos = 0
+    seed = []
+
+    ambiente = []
+    ambiente_linha = []
+    self.qtdLixos += 1
+
+    for i in range(20):
+      for i in range(20):
+        ambiente_linha.append(" ")
+        seed = random.randint(0, 10)
+        if seed == 0 and self.qtdLixos < 20:
+          seed = random.randint(0, 1)
+
+          if seed == 0:
+            ambiente_linha[-1] = 'lixo_reciclavel'
+          else:
+            ambiente_linha[-1] = 'lixo_organico'
+            
+          self.qtdLixos += 1
+      
+      ambiente.append(ambiente_linha)
+    
+    return ambiente
+      
+  def insereAgentes(self):
+    """Responsável por iniciar os agentes e as lixeiras em um ambiente."""
+
 
   def atualizaAmbiente (self):
     #print("x = ", self.R1.localAtual['x'])
@@ -95,7 +89,7 @@ class classeAmbiente:
       self.ambiente = self.R2.monitoraLixos(self)
     else:
       self.ambiente = self.R2.moveRoboAteFim(self)
-  
+
   def getAmbiente (self):
     """
     Essa função provavelmente vai se transformar em uma diferente na versão final.

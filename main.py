@@ -1,5 +1,5 @@
 import time
-from classeAmbiente import classeAmbiente
+from ambiente import classeAmbiente
 
 # tempo inicial
 start = time.time()
